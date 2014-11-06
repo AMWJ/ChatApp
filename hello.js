@@ -2,9 +2,9 @@
 $(function(){
 	//Based on http://crosscloud.org/0.1.1/example/hello
     $("#error").html("");  // clear the "Missing Javascript" error message
-
+	$.timeago.settings.strings.seconds= "%d seconds"
+	$.timeago.settings.strings.second= "a second"
     var pod = crosscloud.connect();
-    var myMessages = [];
 	var messages=[]
 	messages[pod.loggedInURL]=[]
     var sendMessage = function () {
@@ -20,9 +20,8 @@ $(function(){
 		thisMessage.recipients=[recipients]	//For now, this can only have one recipient
 		thisMessage.body=body
         
-        myMessages.push(thisMessage);
         pod.push(thisMessage);
-        
+        $("#message").val("")	//Ideally this only happens when the message has been sent successfully
     };
 
 
@@ -35,6 +34,31 @@ $(function(){
     });
 	$("#send").click(sendMessage);
     var show = 5;
+	var updateMessages=function(items)
+	{
+		organizeMessages(items);
+		updateRecipientList()
+		displayMessages();
+	}
+	var updateRecipientList=function()
+	{
+		$("#recipients").html("");
+		var rs = Object.keys(messages);
+		$("#recipients").append($("<optgroup label=Be>"));
+		if(rs.length==0)
+		{
+			$("#recipients").append(newRecipientOption("(None)"));
+		}
+		rs.forEach(function(recipient)
+		{
+			$("#recipients").append(newRecipientOption(recipient));
+
+		});
+	}
+	var newRecipientOption=function(recipient)
+	{
+		return $("<option>").html(recipient);
+	}
 	var organizeMessages = function (items)	//Sort all messages by other party
 	{
 		messages=[]
@@ -72,9 +96,9 @@ $(function(){
 				});
 			}
 		});
-		displayMessages();
 	}
-    var displayMessages = function () {
+    var displayMessages = function ()
+	{
 		$("#out").html("<table id='results'><tr><th>Link</th><th>Sent</th><th>From</th><th>To</th></tr></table>");
 		var table = $("#results");
 		var currentRecipient=$("#recipient").val()
@@ -92,7 +116,7 @@ $(function(){
 				count++;
 				var row = $("<tr>");
 				row.append($("<td>").html("<a href='"+item._id+"'>data</a>"));
-				row.append($("<td>").text(item.when || "---"));
+				row.append($("<td>").text($.timeago(item.when) || "---"));
 				row.append($("<td>").html("<a href='"+item._owner+"'>"+item._owner+"</a>"));
 				row.append($("<td>").text(recipientList(item.recipients) || "(anon)"));
 				row.append($("<td>").html(item.body));
@@ -107,18 +131,19 @@ $(function(){
     pod.onLogin(function () {
         $("#out").html("waiting for data...");
         pod.onLogout(function () {
-            organizeMessages([])
+            updateMessages([])
 			$("#recipient").off("input");
 			$("#send").prop('disabled', true);
+			//clearInterval(displayLoop)
         });
-
+		//var displayLoop=setInterval(displayMessages,1000)
         pod.query()
             .filter( { isChatMessage:0.1 } )
-            .onAllResults(organizeMessages)
+            .onAllResults(updateMessages)
             .start();
 		$("#recipient").on("input",displayMessages);
     });
-
+	
 });
 function recipientList(recipients)
 {

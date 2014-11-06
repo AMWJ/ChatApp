@@ -1,56 +1,58 @@
 <!DOCTYPE html>
 <html lang="en-US">
-<head>
-<title>Test</title>
-<script src="http://crosscloud.org/0.1.1/crosscloud.js"></script>
-<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="hello.js"></script>
-<style>
-body { 
-  font-family: Arial; 
-}
-.note {
-  margin: 0;
-  padding-left: 2em;
-  font-size: 85%;
-  font-style: italic;
-}
-table {
-    border-width: 5px;
-}
-thead td {
-  background: #ccc;
-}
-tbody tr th {
-  border-bottom: 1px solid #ccc;
-}
-tbody tr:hover {
- background: #eee;
-}
-td, th {
- padding: 2px;
- padding-left: 6px
-}
-</style>
-</head>
-<body>
-  <div id="error">JS Not Running</div>
-  <div>
-
-	<h2>Hello, World!<br/><span style="font-size: 70%; color:gray;">Crosscloud Demo Application</span></h2>
-
-	<p class="note">This is a variation on the concept of a <a href="http://en.wikipedia.org/wiki/%22Hello,_world!%22_program">Hello, World program</a>.  With this one, the user actually says Hello to everyone else who runs the program.  So it's more complicated that just displaying a string, but it's still quite simple for a multi-user Web Application.  You should be able to save this page (with the associated <a href="hello.hs">hello.js</a> to your local filesystem and run them from there (or another Web server), modifying them as you like -- still working with the same multi-user data.</p>
-
-	<p><label for="recipient">To</label>
-	<input id="recipient" type="text" placeholder="Recipient" /><br/><br/>
-	<textarea id="message" type="text" placeholder="Message"></textarea>
-	<button id="send">Send!</button>
-	</p>
-
-	<p>Chat History:</p>
-
-	<div id="out"><i>Waiting for query results...</i></div>
-
-  </div>
-</body>
+	<head>
+		<title>Cross With Me</title>
+		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="jquery.timeago.js"></script>
+		<script src="hello.js"></script>
+		<script src="http://crosscloud.org/0.1.1/crosscloud.js"></script>
+		<style>
+			body { 
+			  font-family: Arial; 
+			}
+			.note {
+			  margin: 0;
+			  padding-left: 2em;
+			  font-size: 85%;
+			  font-style: italic;
+			}
+			table {
+				border-width: 5px;
+			}
+			thead td {
+			  background: #ccc;
+			}
+			tbody tr th {
+			  border-bottom: 1px solid #ccc;
+			}
+			tbody tr:hover {
+			 background: #eee;
+			}
+			td, th {
+			 padding: 2px;
+			 padding-left: 6px
+			}
+		</style>
+	</head>
+	<body>
+		<div id="error">JS Not Running</div>
+		<div>
+			<h2>Cross With Me<br/><span style="font-size: 70%; color:gray;">Crosscloud Chatting Application Demo</span></h2>
+			<p class="note">
+				This is a chat application, based on code from the <a href="http://crosscloud.org/0.1.1/example/hello">Crosscloud Hello World Demo Application</a>.  The modifications were made by Ariel Jacobs.
+			</p>
+			<datalist id=recipients >
+			</datalist>
+			<p>
+				<label for="recipient">To</label>
+				<input id="recipient" list=recipients type="text" placeholder="Recipient" /><br/><br/>
+				<textarea id="message" type="text" placeholder="Message"></textarea>
+				<button id="send">Send!</button>
+			</p>
+			<p>Chat History:</p>
+			<div id="out">
+				<i>Waiting for query results...</i>
+			</div>
+		</div>
+	</body>
 </html>
